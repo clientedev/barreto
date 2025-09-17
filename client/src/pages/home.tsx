@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import image1 from '@assets/image_1758133656734.png';
-import image2 from '@assets/image_1758133660881.png';
-import image3 from '@assets/image_1758133664761.png';
-import image4 from '@assets/image_1758133668503.png';
-import image5 from '@assets/image_1758133672255.png';
+import image1 from '@assets/image_1758133650855.png';
+import image2 from '@assets/image_1758133656734.png';
+import image3 from '@assets/image_1758133660881.png';
+import image4 from '@assets/image_1758133664761.png';
+import image5 from '@assets/image_1758133668503.png';
+import image6 from '@assets/image_1758133672255.png';
 
 interface TimeData {
   years: number;
@@ -31,11 +32,12 @@ export default function Home() {
   
   // Image array with all provided photos
   const images = [
-    { src: image1, alt: "Joel e Sandra - Memória especial" },
-    { src: image2, alt: "Joel e Sandra na natureza" },
-    { src: image3, alt: "Joel e Sandra - Momento íntimo" },
-    { src: image4, alt: "Joel e Sandra com a família" },
-    { src: image5, alt: "Joel e Sandra - Celebração" }
+    { src: image1, alt: "Joel e Sandra - Momento especial na rua" },
+    { src: image2, alt: "Joel e Sandra - Paisagem natural" },
+    { src: image3, alt: "Joel e Sandra - Natureza ao ar livre" },
+    { src: image4, alt: "Joel e Sandra - Momento íntimo" },
+    { src: image5, alt: "Joel e Sandra com a família" },
+    { src: image6, alt: "Joel e Sandra - Celebração em família" }
   ];
   
   const totalSlides = images.length;
