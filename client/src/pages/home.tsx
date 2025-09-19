@@ -39,8 +39,6 @@ export default function Home() {
   
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Anniversary date: September 20, 1975
-  const anniversaryDate = new Date('1975-09-20T00:00:00');
   
   // Image array with all provided photos
   const images = [
@@ -100,11 +98,13 @@ export default function Home() {
         months = (months + 11) % 12;
       }
       
-      // Calculate days - find the anchor date (last anniversary)
-      const anchorY = n.y - (n.m < 9 || (n.m === 9 && n.d < 20) ? 1 : 0);
-      const anchorM = n.m < 9 || (n.m === 9 && n.d < 20) ? 9 : 9;
-      const anchorEpoch = brEpoch(anchorY, anchorM, 20, 0, 0, 0);
-      const days = Math.floor((nowEpoch - anchorEpoch) / (1000 * 60 * 60 * 24));
+      // Calculate days - find the anchor date (last monthly anniversary)
+      const baseY = (n.m < 9 || (n.m === 9 && n.d < 20)) ? n.y - 1 : n.y; // last Sep 20
+      const monthIndex = (9 - 1) + months; // months is 0..11
+      const anchorY2 = baseY + Math.floor(monthIndex / 12);
+      const anchorM2 = (monthIndex % 12) + 1;
+      const anchorMonthEpoch = brEpoch(anchorY2, anchorM2, 20, 0, 0, 0);
+      const days = Math.floor((nowEpoch - anchorMonthEpoch) / (1000 * 60 * 60 * 24));
       
       // Calculate total time from the corrected baseline
       const totalMs = nowEpoch - startEpoch;
