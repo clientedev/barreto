@@ -605,7 +605,7 @@
 .carousel-image.wedding-special,
 .carousel-image.wedding-ceremony-2,
 .carousel-image.wedding-final {
-  transform: rotate(90deg);
+  transform: rotate(-90deg);
   width: auto;
   height: 100%;
   object-fit: contain;

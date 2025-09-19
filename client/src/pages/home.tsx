@@ -39,8 +39,8 @@ export default function Home() {
   
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Anniversary date: September 20, 2025
-  const anniversaryDate = new Date('2025-09-20T00:00:00');
+  // Anniversary date: September 20, 1975
+  const anniversaryDate = new Date('1975-09-20T00:00:00');
   
   // Image array with all provided photos
   const images = [
