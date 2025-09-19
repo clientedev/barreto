@@ -5,6 +5,16 @@ import image3 from '@assets/image_1758133660881.png';
 import image4 from '@assets/image_1758133664761.png';
 import image5 from '@assets/image_1758133668503.png';
 import image6 from '@assets/image_1758133672255.png';
+// New family photos
+import image7 from '@assets/image_1758306769270.png';
+import image8 from '@assets/image_1758306773343.png';
+import image9 from '@assets/image_1758306777510.png';
+import image10 from '@assets/image_1758306783305.png';
+import image11 from '@assets/image_1758306787536.png';
+import image12 from '@assets/image_1758306791915.png';
+import image13 from '@assets/image_1758306795441.png';
+import image14 from '@assets/image_1758306799121.png';
+import image15 from '@assets/image_1758306802354.png';
 
 interface TimeData {
   years: number;
@@ -13,6 +23,7 @@ interface TimeData {
   totalDays: number;
   hours: number;
   minutes: number;
+  seconds: number;
 }
 
 export default function Home() {
@@ -22,13 +33,14 @@ export default function Home() {
     days: 0,
     totalDays: 0,
     hours: 0,
-    minutes: 0
+    minutes: 0,
+    seconds: 0
   });
   
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Anniversary date: September 20, 1975
-  const anniversaryDate = new Date('1975-09-20T00:00:00');
+  // Anniversary date: September 20, 2025
+  const anniversaryDate = new Date('2025-09-20T00:00:00');
   
   // Image array with all provided photos
   const images = [
@@ -37,7 +49,16 @@ export default function Home() {
     { src: image3, alt: "Joel e Sandra - Natureza ao ar livre" },
     { src: image4, alt: "Joel e Sandra - Momento íntimo" },
     { src: image5, alt: "Joel e Sandra com a família" },
-    { src: image6, alt: "Joel e Sandra - Celebração em família" }
+    { src: image6, alt: "Joel e Sandra - Celebração em família" },
+    { src: image7, alt: "Joel e Sandra - Festa em família", className: "family-group" },
+    { src: image8, alt: "Joel e Sandra - Celebração do casamento", className: "wedding-photo" },
+    { src: image9, alt: "Joel e Sandra - Momento romântico do casamento", className: "wedding-portrait rotated-90" },
+    { src: image10, alt: "Joel e Sandra - Cerimônia de casamento", className: "wedding-ceremony rotated-90" },
+    { src: image11, alt: "Joel e Sandra - Família reunida no casamento", className: "wedding-family rotated-90" },
+    { src: image12, alt: "Joel e Sandra - Celebração matrimonial", className: "wedding-celebration rotated-90" },
+    { src: image13, alt: "Joel e Sandra - Momento especial do casamento", className: "wedding-special rotated-90" },
+    { src: image14, alt: "Joel e Sandra - Cerimônia matrimonial", className: "wedding-ceremony-2 rotated-90" },
+    { src: image15, alt: "Joel e Sandra - Celebração final do casamento", className: "wedding-final rotated-90" }
   ];
   
   const totalSlides = images.length;
@@ -56,6 +77,7 @@ export default function Home() {
       const totalDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
       const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
       
       setTimeData({
         years,
@@ -63,12 +85,13 @@ export default function Home() {
         days,
         totalDays,
         hours,
-        minutes
+        minutes,
+        seconds
       });
     };
     
     updateCounters();
-    const interval = setInterval(updateCounters, 60000); // Update every minute
+    const interval = setInterval(updateCounters, 1000); // Update every second for real-time precision
     
     return () => clearInterval(interval);
   }, []);
@@ -180,6 +203,10 @@ export default function Home() {
                 <span className="time-number" data-testid="minutes-counter">{timeData.minutes}</span>
                 <span className="time-label">Minutos</span>
               </div>
+              <div className="time-unit">
+                <span className="time-number" data-testid="seconds-counter">{timeData.seconds}</span>
+                <span className="time-label">Segundos</span>
+              </div>
             </div>
           </div>
         </section>
@@ -211,7 +238,7 @@ export default function Home() {
                   <img 
                     src={image.src}
                     alt={image.alt}
-                    className="carousel-image"
+                    className={`carousel-image ${image.className || ''}`}
                   />
                 </div>
               ))}
