@@ -64,20 +64,54 @@ export default function Home() {
   const totalSlides = images.length;
   
   useEffect(() => {
+    // Helper functions for Brazil timezone (UTC-3)
+    const nowInBR = () => {
+      const utc = Date.now() + new Date().getTimezoneOffset() * 60000;
+      const br = new Date(utc - 3 * 3600000); // UTC-3 for Brazil
+      return {
+        y: br.getUTCFullYear(),
+        m: br.getUTCMonth() + 1, // getUTCMonth() returns 0-11
+        d: br.getUTCDate(),
+        h: br.getUTCHours(),
+        min: br.getUTCMinutes(),
+        s: br.getUTCSeconds()
+      };
+    };
+
+    const brEpoch = (y: number, m: number, d: number, h = 0, min = 0, s = 0) => {
+      return Date.UTC(y, m - 1, d, h + 3, min, s); // +3 hours to convert BR time to UTC
+    };
+
     const updateCounters = () => {
-      const now = new Date();
-      const timeDifference = now.getTime() - anniversaryDate.getTime();
+      const n = nowInBR();
+      const startEpoch = brEpoch(1975, 9, 20, 0, 0, 0);
+      const nowEpoch = brEpoch(n.y, n.m, n.d, n.h, n.min, n.s);
       
-      // Calculate years, months, days
-      const years = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 365.25));
-      const months = Math.floor((timeDifference % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
-      const days = Math.floor((timeDifference % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+      // Calculate years using proper calendar math
+      let years = n.y - 1975;
+      if (n.m < 9 || (n.m === 9 && n.d < 20)) {
+        years--;
+      }
       
-      // Calculate total time
-      const totalDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+      // Calculate months from the remainder
+      let months = n.m - 9;
+      if (months < 0) months += 12;
+      if (n.d < 20) {
+        months = (months + 11) % 12;
+      }
+      
+      // Calculate days - find the anchor date (last anniversary)
+      const anchorY = n.y - (n.m < 9 || (n.m === 9 && n.d < 20) ? 1 : 0);
+      const anchorM = n.m < 9 || (n.m === 9 && n.d < 20) ? 9 : 9;
+      const anchorEpoch = brEpoch(anchorY, anchorM, 20, 0, 0, 0);
+      const days = Math.floor((nowEpoch - anchorEpoch) / (1000 * 60 * 60 * 24));
+      
+      // Calculate total time from the corrected baseline
+      const totalMs = nowEpoch - startEpoch;
+      const totalDays = Math.floor(totalMs / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((totalMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((totalMs % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((totalMs % (1000 * 60)) / 1000);
       
       setTimeData({
         years,
